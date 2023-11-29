@@ -11,10 +11,10 @@ extension Application {
         accessToken: String? = nil,
         user: User? = nil,
         content: C,
-        afterResponse: (XCTHTTPResponse) throws -> () = { _ in },
+        afterResponse: (XCTHTTPResponse) async throws -> () = { _ in },
         file: StaticString = #file,
         line: UInt = #line
-    ) throws -> XCTApplicationTester {
+    ) async throws -> XCTApplicationTester {
         var headers = headers
         
         if let token = accessToken {
@@ -26,7 +26,7 @@ extension Application {
             headers.add(name: "Authorization", value: "Bearer \(accessToken)")
         }
         
-        return try test(method, path, headers: headers, beforeRequest: { req in
+        return try await test(method, path, headers: headers, beforeRequest: { req in
             try req.content.encode(content)
         }, afterResponse: afterResponse)
     }

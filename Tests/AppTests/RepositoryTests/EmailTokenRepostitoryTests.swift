@@ -21,29 +21,29 @@ final class EmailTokenRepositoryTests: XCTestCase {
         app.shutdown()
     }
     
-    func testCreatingEmailToken() throws {
-        try user.create(on: app.db).wait()
+    func testCreatingEmailToken() async throws {
+        try await user.create(on: app.db)
         let emailToken = EmailToken(userID: try user.requireID(), token: "emailToken")
-        try repository.create(emailToken).wait()
+        try await repository.create(emailToken)
         
-        let count = try EmailToken.query(on: app.db).count().wait()
+        let count = try await EmailToken.query(on: app.db).count()
         XCTAssertEqual(count, 1)
     }
     
-    func testFindingEmailTokenByToken() throws {
-        try user.create(on: app.db).wait()
+    func testFindingEmailTokenByToken() async throws {
+        try await user.create(on: app.db)
         let emailToken = EmailToken(userID: try user.requireID(), token: "123")
-        try emailToken.create(on: app.db).wait()
-        let found = try repository.find(token: "123").wait()
+        try await emailToken.create(on: app.db)
+        let found = try await repository.find(token: "123")
         XCTAssertNotNil(found)
     }
     
-    func testDeleteEmailToken() throws {
-        try user.create(on: app.db).wait()
+    func testDeleteEmailToken() async throws {
+        try await user.create(on: app.db)
         let emailToken = EmailToken(userID: try user.requireID(), token: "123")
-        try emailToken.create(on: app.db).wait()
-        try repository.delete(emailToken).wait()
-        let count = try EmailToken.query(on: app.db).count().wait()
+        try await emailToken.create(on: app.db)
+        try await repository.delete(emailToken)
+        let count = try await EmailToken.query(on: app.db).count()
         XCTAssertEqual(count, 0)
     }
 }

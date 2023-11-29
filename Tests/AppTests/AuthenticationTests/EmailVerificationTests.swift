@@ -19,26 +19,31 @@ final class EmailVerificationTests: XCTestCase {
         app.shutdown()
     }
     
-    func testVerifyingEmailHappyPath() throws {
+    func testVerifyingEmailHappyPath() async throws {
         let user = User(fullName: "Test User", email: "test@test.com", passwordHash: "123")
-        try app.repositories.users.create(user).wait()
+        try await app.repositories.users.create(user)
         let expectedHash = SHA256.hash("token123")
         
-        let emailToken = EmailToken(userID: try user.requireID(), token: expectedHash)
-        try app.repositories.emailTokens.create(emailToken).wait()
+        let emailToken = EmailToken(userID: try user.requireID(),
+                                    token: expectedHash)
+        try await app.repositories.emailTokens.create(emailToken)
         
-        try app.test(.GET, verifyURL, beforeRequest: { req in
+        try await app.test(.GET, verifyURL, beforeRequest: { req in
             try req.query.encode(["token": "token123"])
         }, afterResponse: { res in
             XCTAssertEqual(res.status, .ok)
-            let user = try XCTUnwrap(app.repositories.users.find(id: user.id!).wait())
-            XCTAssertEqual(user.isEmailVerified, true)
-            let token = try app.repositories.emailTokens.find(userID: user.requireID()).wait()
-            XCTAssertNil(token)
+            if let user = try await app.repositories.users.find(id: user.id!) {
+                XCTAssertEqual(user.isEmailVerified, true, "The user should be found.")
+                let token = try await app.repositories.emailTokens.find(userID: user.requireID())
+                XCTAssertNil(token, "Token should have been created and found/")
+            }else {
+                XCTFail("User not created!")
+            }
+          
         })
     }
     
-    func testVerifyingEmailWithInvalidTokenFails() throws {
+    func testVerifyingEmailWithInvalidTokenFails() async throws {
         try app.test(.GET, verifyURL, beforeRequest: { req in
             try req.query.encode(["token": "blabla"])
         }, afterResponse: { res in
@@ -46,12 +51,12 @@ final class EmailVerificationTests: XCTestCase {
         })
     }
     
-    func testVerifyingEmailWithExpiredTokenFails() throws {
+    func testVerifyingEmailWithExpiredTokenFails() async throws {
         let user = User(fullName: "Test User", email: "test@test.com", passwordHash: "123")
-        try app.repositories.users.create(user).wait()
+        try await app.repositories.users.create(user)
         let expectedHash = SHA256.hash("token123")
         let emailToken = EmailToken(userID: try user.requireID(), token: expectedHash, expiresAt: Date().addingTimeInterval(-Constants.EMAIL_TOKEN_LIFETIME - 1) )
-        try app.repositories.emailTokens.create(emailToken).wait()
+        try await app.repositories.emailTokens.create(emailToken)
         
         try app.test(.GET, verifyURL, beforeRequest: { req in
             try req.query.encode(["token": "token123"])
@@ -60,17 +65,17 @@ final class EmailVerificationTests: XCTestCase {
         })
     }
     
-    func testResendEmailVerification() throws {
+    func testResendEmailVerification() async throws {
         app.randomGenerators.use(.rigged(value: "emailtoken"))
         
         let user = User(fullName: "Test User", email: "test@test.com", passwordHash: "123")
-        try app.repositories.users.create(user).wait()
+        try await app.repositories.users.create(user)
         
         let content = SendEmailVerificationRequest(email: "test@test.com")
         
-        try app.test(.POST, "api/auth/email-verification", content: content, afterResponse: { res in
+        try await app.test(.POST, "api/auth/email-verification", content: content, afterResponse: { res in
             XCTAssertEqual(res.status, .noContent)
-            let emailToken = try app.repositories.emailTokens.find(token: SHA256.hash("emailtoken")).wait()
+            let emailToken = try await app.repositories.emailTokens.find(token: SHA256.hash("emailtoken"))
             XCTAssertNotNil(emailToken)
             
             let job = try XCTUnwrap(app.queues.test.first(EmailJob.self))

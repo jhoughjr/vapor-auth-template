@@ -21,40 +21,42 @@ final class TokenTests: XCTestCase {
         app.shutdown()
     }
     
-    func testRefreshAccessToken() throws {
+    func testRefreshAccessToken() async throws {
         app.randomGenerators.use(.rigged(value: "secondrefreshtoken"))
         
-        try app.repositories.users.create(user).wait()
+        try await app.repositories.users.create(user)
         
         let refreshToken = try RefreshToken(token: SHA256.hash("firstrefreshtoken"), userID: user.requireID())
         
-        try app.repositories.refreshTokens.create(refreshToken).wait()
+        try await app.repositories.refreshTokens.create(refreshToken)
         let tokenID = try refreshToken.requireID()
         
         let accessTokenRequest = AccessTokenRequest(refreshToken: "firstrefreshtoken")
         
-        try app.test(.POST, accessTokenPath, content: accessTokenRequest, afterResponse: { res in
+        try await app.test(.POST, accessTokenPath,
+                     content: accessTokenRequest,
+                     afterResponse: { res in
             XCTAssertEqual(res.status, .ok)
             XCTAssertContent(AccessTokenResponse.self, res) { response in
                 XCTAssert(!response.accessToken.isEmpty)
                 XCTAssertEqual(response.refreshToken, "secondrefreshtoken")
             }
-            let deletedToken = try app.repositories.refreshTokens.find(id: tokenID).wait()
+            let deletedToken = try await app.repositories.refreshTokens.find(id: tokenID)
             XCTAssertNil(deletedToken)
-            let newToken = try app.repositories.refreshTokens.find(token: SHA256.hash("secondrefreshtoken")).wait()
+            let newToken = try await app.repositories.refreshTokens.find(token: SHA256.hash("secondrefreshtoken"))
             XCTAssertNotNil(newToken)
         })
     }
     
-    func testRefreshAccessTokenFailsWithExpiredRefreshToken() throws {
-        try app.repositories.users.create(user).wait()
+    func testRefreshAccessTokenFailsWithExpiredRefreshToken() async throws {
+        try await app.repositories.users.create(user)
         let token = try RefreshToken(token: SHA256.hash("123"), userID: user.requireID(), expiresAt: Date().addingTimeInterval(-60))
         
-        try app.repositories.refreshTokens.create(token).wait()
+        try await app.repositories.refreshTokens.create(token)
         
         let accessTokenRequest = AccessTokenRequest(refreshToken: "123")
 
-        try app.test(.POST, accessTokenPath, content: accessTokenRequest, afterResponse: { res in
+        try await app.test(.POST, accessTokenPath, content: accessTokenRequest, afterResponse: { res in
             XCTAssertResponseError(res, AuthenticationError.refreshTokenHasExpired)
         })
     }

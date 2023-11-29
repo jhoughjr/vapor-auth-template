@@ -20,52 +20,52 @@ final class RefreshTokenRepositoryTests: XCTestCase {
         app.shutdown()
     }
     
-    func testCreatingToken() throws {
-        try user.create(on: app.db).wait()
+    func testCreatingToken() async throws {
+        try await user.create(on: app.db)
         let token = try RefreshToken(token: "123", userID: user.requireID())
-        try repository.create(token).wait()
+        try await repository.create(token)
         
         XCTAssertNotNil(token.id)
         
-        let tokenRetrieved = try RefreshToken.find(token.id, on: app.db).wait()
+        let tokenRetrieved = try await RefreshToken.find(token.id, on: app.db)
         XCTAssertNotNil(tokenRetrieved)
         XCTAssertEqual(tokenRetrieved!.$user.id, try user.requireID())
     }
     
-    func testFindingTokenById() throws {
-        try user.create(on: app.db).wait()
+    func testFindingTokenById() async throws {
+        try await user.create(on: app.db)
         let token = try RefreshToken(token: "123", userID: user.requireID())
-        try token.create(on: app.db).wait()
+        try await token.create(on: app.db)
         let tokenId = try token.requireID()
-        let tokenFound = try repository.find(id: tokenId).wait()
+        let tokenFound = try await  repository.find(id: tokenId)
         XCTAssertNotNil(tokenFound)
     }
     
     // TODO: Requires to reset the middleware of the database... so lets do that when my PR gets merged.
-    func testFindingTokenByTokenString() throws {
-        try user.create(on: app.db).wait()
+    func testFindingTokenByTokenString() async throws {
+        try await user.create(on: app.db)
         let token = try RefreshToken(token: "123", userID: user.requireID())
-        try token.create(on: app.db).wait()
-        let tokenFound = try repository.find(token: "123").wait()
+        try await token.create(on: app.db)
+        let tokenFound = try await repository.find(token: "123")
         XCTAssertNotNil(tokenFound)
     }
     
-    func testDeletingToken() throws {
-        try user.create(on: app.db).wait()
+    func testDeletingToken() async throws {
+        try await  user.create(on: app.db)
         let token = try RefreshToken(token: "123", userID: user.requireID())
-        try token.create(on: app.db).wait()
-        let tokenCount = try RefreshToken.query(on: app.db).count().wait()
-        XCTAssertEqual(tokenCount, 1)
-        try repository.delete(token).wait()
+        try await token.create(on: app.db)
+        let tokenCount = try await RefreshToken.query(on: app.db).count()
+        XCTAssertEqual(tokenCount, 1, "Need to create a token to test delete.")
+        try await repository.delete(token)
         let newTokenCount = try RefreshToken.query(on: app.db).count().wait()
-        XCTAssertEqual(newTokenCount, 0)
+        XCTAssertEqual(newTokenCount, 0, "Created token should have been deleted.")
     }
     
-    func testGetCount() throws {
-        try user.create(on: app.db).wait()
+    func testGetCount() async throws {
+        try await user.create(on: app.db)
         let token = try RefreshToken(token: "123", userID: user.requireID())
-        try token.create(on: app.db).wait()
-        let tokenCount = try repository.count().wait()
+        try await token.create(on: app.db)
+        let tokenCount = try await repository.count()
         XCTAssertEqual(tokenCount, 1)
     }
 }

@@ -18,53 +18,53 @@ final class UserRepositoryTests: XCTestCase {
         app.shutdown()
     }
     
-    func testCreatingUser() throws {
+    func testCreatingUser() async throws {
         let user = User(fullName: "Test User", email: "test@test.com", passwordHash: "123")
-        try repository.create(user).wait()
+        try await repository.create(user)
         
         XCTAssertNotNil(user.id)
         
-        let userRetrieved = try User.find(user.id, on: app.db).wait()
+        let userRetrieved = try await User.find(user.id, on: app.db)
         XCTAssertNotNil(userRetrieved)
     }
     
-    func testDeletingUser() throws {
+    func testDeletingUser() async throws {
         let user = User(fullName: "Test User", email: "test@test.com", passwordHash: "123")
-        try user.create(on: app.db).wait()
-        let count = try User.query(on: app.db).count().wait()
+        try await user.create(on: app.db)
+        let count = try await User.query(on: app.db).count()
         XCTAssertEqual(count, 1)
         
-        try repository.delete(id: user.requireID()).wait()
-        let countAfterDelete = try User.query(on: app.db).count().wait()
+        try await repository.delete(id: user.requireID())
+        let countAfterDelete = try await User.query(on: app.db).count()
         XCTAssertEqual(countAfterDelete, 0)
     }
     
-    func testGetAllUsers() throws {
+    func testGetAllUsers() async throws {
         let user = User(fullName: "Test User", email: "test@test.com", passwordHash: "123")
         let user2 = User(fullName: "Test User 2", email: "test2@test.com", passwordHash: "123")
         
-        try user.create(on: app.db).wait()
-        try user2.create(on: app.db).wait()
+        try await user.create(on: app.db)
+        try await user2.create(on: app.db)
         
-        let users = try repository.all().wait()
+        let users = try await repository.all()
         XCTAssertEqual(users.count, 2)
     }
     
-    func testFindUserById() throws {
+    func testFindUserById() async throws {
         let user = User(fullName: "Test User", email: "test@test.com", passwordHash: "123")
-        try user.create(on: app.db).wait()
+        try await user.create(on: app.db)
         
-        let userFound = try repository.find(id: user.requireID()).wait()
+        let userFound = try await repository.find(id: user.requireID())
         XCTAssertNotNil(userFound)
     }
     
-    func testSetFieldValue() throws {
+    func testSetFieldValue() async throws {
         let user = User(fullName: "Test User", email: "test@test.com", passwordHash: "123", isEmailVerified: false)
-        try user.create(on: app.db).wait()
+        try await user.create(on: app.db)
         
-        try repository.set(\.$isEmailVerified, to: true, for: user.requireID()).wait()
-        
-        let updatedUser = try User.find(user.id!, on: app.db).wait()
+        try await repository.set(\.$isEmailVerified, to: true, for: user.requireID())
+    
+        let updatedUser = try await User.find(user.id!, on: app.db)
         XCTAssertEqual(updatedUser!.isEmailVerified, true)
     }
 }

@@ -10,24 +10,21 @@ class TestEmailTokenRepository: EmailTokenRepository, TestRepository {
         self.eventLoop = eventLoop
     }
     
-    func find(token: String) -> EventLoopFuture<EmailToken?> {
-        let token = tokens.first(where: { $0.token == token })
-        return eventLoop.makeSucceededFuture(token)
+    func find(token: String) async throws -> EmailToken? {
+        tokens.first(where: { $0.token == token })
     }
     
-    func create(_ emailToken: EmailToken) -> EventLoopFuture<Void> {
+    func create(_ emailToken: EmailToken)  {
         tokens.append(emailToken)
-        return eventLoop.makeSucceededFuture(())
+        
     }
     
-    func delete(_ emailToken: EmailToken) -> EventLoopFuture<Void> {
+    func delete(_ emailToken: EmailToken) async throws {
         tokens.removeAll(where: { $0.id == emailToken.id })
-        return eventLoop.makeSucceededFuture(())
     }
     
     
-    func find(userID: UUID) -> EventLoopFuture<EmailToken?> {
-        let token = tokens.first(where: { $0.$user.id == userID })
-        return eventLoop.makeSucceededFuture(token)
+    func find(userID: UUID) async throws -> EmailToken? {
+        tokens.first(where: { $0.$user.id == userID })
     }
 }

@@ -2,31 +2,31 @@ import Vapor
 import Fluent
 
 protocol EmailTokenRepository: Repository {
-    func find(token: String) -> EventLoopFuture<EmailToken?>
-    func create(_ emailToken: EmailToken) -> EventLoopFuture<Void>
-    func delete(_ emailToken: EmailToken) -> EventLoopFuture<Void>
-    func find(userID: UUID) -> EventLoopFuture<EmailToken?>
+    func find(token: String) async throws -> EmailToken?
+    func create(_ emailToken: EmailToken) async throws 
+    func delete(_ emailToken: EmailToken) async throws
+    func find(userID: UUID) async throws -> EmailToken?
 }
 
 struct DatabaseEmailTokenRepository: EmailTokenRepository, DatabaseRepository {
     let database: Database
     
-    func find(token: String) -> EventLoopFuture<EmailToken?> {
-        return EmailToken.query(on: database)
+    func find(token: String) async throws -> EmailToken? {
+        try await EmailToken.query(on: database)
             .filter(\.$token == token)
             .first()
     }
     
-    func create(_ emailToken: EmailToken) -> EventLoopFuture<Void> {
-        return emailToken.create(on: database)
+    func create(_ emailToken: EmailToken) async throws {
+        try await emailToken.create(on: database)
     }
     
-    func delete(_ emailToken: EmailToken) -> EventLoopFuture<Void> {
-        return emailToken.delete(on: database)
+    func delete(_ emailToken: EmailToken) async throws {
+        try await emailToken.delete(on: database)
     }
     
-    func find(userID: UUID) -> EventLoopFuture<EmailToken?> {
-        EmailToken.query(on: database)
+    func find(userID: UUID) async throws -> EmailToken? {
+        try await EmailToken.query(on: database)
             .filter(\.$user.$id == userID)
             .first()
     }

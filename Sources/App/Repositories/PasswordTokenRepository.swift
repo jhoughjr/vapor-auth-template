@@ -2,45 +2,45 @@ import Vapor
 import Fluent
 
 protocol PasswordTokenRepository: Repository {
-    func find(userID: UUID) -> EventLoopFuture<PasswordToken?>
-    func find(token: String) -> EventLoopFuture<PasswordToken?>
-    func count() -> EventLoopFuture<Int>
-    func create(_ passwordToken: PasswordToken) -> EventLoopFuture<Void>
-    func delete(_ passwordToken: PasswordToken) -> EventLoopFuture<Void>
-    func delete(for userID: UUID) -> EventLoopFuture<Void>
+    func find(userID: UUID) async throws -> PasswordToken?
+    func find(token: String) async throws -> PasswordToken?
+    func count() async throws -> Int
+    func create(_ passwordToken: PasswordToken) async throws
+    func delete(_ passwordToken: PasswordToken) async throws
+    func delete(for userID: UUID) async throws
 }
 
 struct DatabasePasswordTokenRepository: PasswordTokenRepository, DatabaseRepository {
     var database: Database
     
-    func find(userID: UUID) -> EventLoopFuture<PasswordToken?> {
-        PasswordToken.query(on: database)
+    func find(userID: UUID) async throws -> PasswordToken? {
+        try await PasswordToken.query(on: database)
             .filter(\.$user.$id == userID)
             .first()
      }
     
-    func find(token: String) -> EventLoopFuture<PasswordToken?> {
-        PasswordToken.query(on: database)
-            .filter(\.$token == token)
-            .first()
+    func find(token: String) async throws -> PasswordToken? {
+        try await PasswordToken.query(on: database)
+                               .filter(\.$token == token)
+                               .first()
     }
     
-    func count() -> EventLoopFuture<Int> {
-        PasswordToken.query(on: database).count()
+    func count() async throws -> Int  {
+        try await PasswordToken.query(on: database).count()
     }
     
-    func create(_ passwordToken: PasswordToken) -> EventLoopFuture<Void> {
-        passwordToken.create(on: database)
+    func create(_ passwordToken: PasswordToken) async throws {
+        try await passwordToken.create(on: database)
     }
     
-    func delete(_ passwordToken: PasswordToken) -> EventLoopFuture<Void> {
-        passwordToken.delete(on: database)
+    func delete(_ passwordToken: PasswordToken) async throws {
+        try await passwordToken.delete(on: database)
     }
     
-    func delete(for userID: UUID) -> EventLoopFuture<Void> {
-        PasswordToken.query(on: database)
-            .filter(\.$user.$id == userID)
-            .delete()
+    func delete(for userID: UUID) async throws {
+        try await PasswordToken.query(on: database)
+                               .filter(\.$user.$id == userID)
+                               .delete()
     }
 }
 

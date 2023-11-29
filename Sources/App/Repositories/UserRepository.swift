@@ -2,53 +2,59 @@ import Vapor
 import Fluent
 
 protocol UserRepository: Repository {
-    func create(_ user: User) -> EventLoopFuture<Void>
-    func delete(id: UUID) -> EventLoopFuture<Void>
-    func all() -> EventLoopFuture<[User]>
-    func find(id: UUID?) -> EventLoopFuture<User?>
-    func find(email: String) -> EventLoopFuture<User?>
-    func set<Field>(_ field: KeyPath<User, Field>, to value: Field.Value, for userID: UUID) -> EventLoopFuture<Void> where Field: QueryableProperty, Field.Model == User
-    func count() -> EventLoopFuture<Int>
+    func create(_ user: User) async throws
+    func delete(id: UUID) async throws
+    func all() async throws -> [User]
+    func find(id: UUID?) async throws -> User?
+    func find(email: String) async throws ->  User?
+    func set<Field>(_ field: KeyPath<User, Field>,
+                    to value: Field.Value,
+                    for userID: UUID) async throws
+                where Field: QueryableProperty, Field.Model == User
+    
+    func count() async throws -> Int
 }
 
 struct DatabaseUserRepository: UserRepository, DatabaseRepository {
     let database: Database
     
-    func create(_ user: User) -> EventLoopFuture<Void> {
-        return user.create(on: database)
+    func create(_ user: User) async throws {
+        return try await user.create(on: database)
     }
     
-    func delete(id: UUID) -> EventLoopFuture<Void> {
-        return User.query(on: database)
+    func delete(id: UUID) async throws {
+        return try await User.query(on: database)
             .filter(\.$id == id)
             .delete()
     }
     
-    func all() -> EventLoopFuture<[User]> {
-        return User.query(on: database).all()
+    func all() async throws -> [User] {
+        try await User.query(on: database).all()
     }
     
-    func find(id: UUID?) -> EventLoopFuture<User?> {
-        return User.find(id, on: database)
+    func find(id: UUID?) async throws -> User? {
+        try await User.find(id, on: database)
     }
     
-    func find(email: String) -> EventLoopFuture<User?> {
-        return User.query(on: database)
+    func find(email: String) async throws -> User? {
+        try await User.query(on: database)
             .filter(\.$email == email)
             .first()
     }
     
-    func set<Field>(_ field: KeyPath<User, Field>, to value: Field.Value, for userID: UUID) -> EventLoopFuture<Void>
+    func set<Field>(_ field: KeyPath<User, Field>,
+                    to value: Field.Value,
+                    for userID: UUID) async throws
         where Field: QueryableProperty, Field.Model == User
     {
-        return User.query(on: database)
+        return try await User.query(on: database)
             .filter(\.$id == userID)
             .set(field, to: value)
             .update()
     }
     
-    func count() -> EventLoopFuture<Int> {
-        return User.query(on: database).count()
+    func count() async throws -> Int {
+        try await User.query(on: database).count()
     }
 }
 

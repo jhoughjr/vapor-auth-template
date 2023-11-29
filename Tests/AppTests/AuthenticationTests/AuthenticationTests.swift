@@ -17,9 +17,9 @@ final class AuthenticationTests: XCTestCase {
         app.shutdown()
     }
     
-    func testGettingCurrentUser() throws {
+    func testGettingCurrentUser() async throws {
         let user = User(fullName: "Test User", email: "test@test.com", passwordHash: "123", isAdmin: true)
-        try app.repositories.users.create(user).wait()
+        try await app.repositories.users.create(user)
         
         try app.test(.GET, "api/auth/me", user: user, afterResponse: { res in
             XCTAssertEqual(res.status, .ok)

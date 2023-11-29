@@ -21,37 +21,44 @@ final class PasswordTokenRepositoryTests: XCTestCase {
         app.shutdown()
     }
     
-    func testFindByUserID() throws {
+    func testFindByUserID() async throws {
         let userID = try user.requireID()
         let token = PasswordToken(userID: userID, token: "123")
-        try token.create(on: app.db).wait()
-        try XCTAssertNotNil(repository.find(userID: userID).wait())
+        try await token.create(on: app.db)
+        let user = try await repository.find(userID: userID)
+        XCTAssertNotNil(user)
     }
     
-    func testFindByToken() throws {
+    func testFindByToken() async throws {
         let token = PasswordToken(userID: try user.requireID(), token: "token123")
-        try token.create(on: app.db).wait()
-        try XCTAssertNotNil(repository.find(token: "token123").wait())
+        try await token.create(on: app.db)
+        let user = try await repository.find(token: "token123")
+        XCTAssertNotNil(user)
     }
     
-    func testCount() throws {
+    func testCount() async throws {
         let token = PasswordToken(userID: try user.requireID(), token: "token123")
         let token2 = PasswordToken(userID: try user.requireID(), token: "token123")
-        try [token, token2].create(on: app.db).wait()
-        let count = try repository.count().wait()
+        
+        try await token.create(on: app.db)
+        try await token2.create(on: app.db)
+        let count = try await repository.count()
         XCTAssertEqual(count, 2)
     }
     
-    func testCreate() throws {
+    func testCreate() async throws {
         let token = PasswordToken(userID: try user.requireID(), token: "token123")
-        try repository.create(token).wait()
-        try XCTAssertNotNil(PasswordToken.find(try token.requireID(), on: app.db).wait())
+        try await repository.create(token)
+        let t = try await PasswordToken.find(try token.requireID(),
+                                   on: app.db)
+        
+        XCTAssertNotNil(t)
     }
     
-    func testDelete() throws {
+    func testDelete() async throws {
         let token = PasswordToken(userID: try user.requireID(), token: "token123")
-        try token.create(on: app.db).wait()
-        try repository.delete(token).wait()
+        try await token.create(on: app.db)
+        try await repository.delete(token)
         let count = try PasswordToken.query(on: app.db).count().wait()
         XCTAssertEqual(count, 0)
     }

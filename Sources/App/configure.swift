@@ -46,7 +46,6 @@ public func configure(_ app: Application) throws {
     try queues(app)
     try services(app)
     
-    
     if app.environment == .development {
         try app.autoMigrate().wait()
         try app.queues.startInProcessJobs()

@@ -9,18 +9,13 @@ struct PasswordResetter {
     let generator: RandomGenerator
     
     /// Sends a email to the user with a reset-password URL
-    func reset(for user: User) -> EventLoopFuture<Void> {
-        do {
+    func reset(for user: User) async throws {
             let token = generator.generate(bits: 256)
             let resetPasswordToken = try PasswordToken(userID: user.requireID(), token: SHA256.hash(token))
             let url = resetURL(for: token)
             let email = ResetPasswordEmail(resetURL: url)
-            return repository.create(resetPasswordToken).flatMap {
-                self.queue.dispatch(EmailJob.self, .init(email, to: user.email))
-            }
-        } catch {
-            return eventLoop.makeFailedFuture(error)
-        }
+            try await repository.create(resetPasswordToken)
+            try await self.queue.dispatch(EmailJob.self, .init(email, to: user.email))
     }
     
     private func resetURL(for token: String) -> String {
