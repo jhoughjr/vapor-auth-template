@@ -70,10 +70,15 @@ final class RegisterTests: XCTestCase {
 
         app.repositories.use(.database)
         
-        let user = User(fullName: "Test user 1", email: "test@test.com", passwordHash: "123")
+        let user = User(fullName: "Test user 1",
+                        email: "test@test.com",
+                        passwordHash: "123")
         try await user.create(on: app.db)
                 
-        let registerRequest = RegisterRequest(fullName: "Test user 2", email: "test@test.com", password: "password123", confirmPassword: "password123")
+        let registerRequest = RegisterRequest(fullName: "Test user 2",
+                                              email: "test@test.com",
+                                              password: "password123",
+                                              confirmPassword: "password123")
         try await app.test(.POST, registerPath, beforeRequest: { req in
             try req.content.encode(registerRequest)
         }, afterResponse: { res in

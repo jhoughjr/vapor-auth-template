@@ -22,16 +22,18 @@ final class TokenTests: XCTestCase {
     }
     
     func testRefreshAccessToken() async throws {
+        // this may not work anymore?
         app.randomGenerators.use(.rigged(value: "secondrefreshtoken"))
         
         try await app.repositories.users.create(user)
         
-        let refreshToken = try RefreshToken(token: SHA256.hash("firstrefreshtoken"), userID: user.requireID())
+        let refreshToken = try RefreshToken(token: SHA256.hash("firstrefreshtoken"),
+                                            userID: user.requireID())
         
         try await app.repositories.refreshTokens.create(refreshToken)
         let tokenID = try refreshToken.requireID()
         
-        let accessTokenRequest = AccessTokenRequest(refreshToken: "firstrefreshtoken")
+        let accessTokenRequest = AccessTokenRequest(refreshToken: refreshToken.token)
         
         try await app.test(.POST, accessTokenPath,
                      content: accessTokenRequest,
@@ -41,9 +43,10 @@ final class TokenTests: XCTestCase {
                 XCTAssert(!response.accessToken.isEmpty)
                 XCTAssertEqual(response.refreshToken, "secondrefreshtoken")
             }
+            
             let deletedToken = try await app.repositories.refreshTokens.find(id: tokenID)
             XCTAssertNil(deletedToken)
-            let newToken = try await app.repositories.refreshTokens.find(token: SHA256.hash("secondrefreshtoken"))
+            let newToken = try await app.repositories.refreshTokens.find(token: SHA256.hash(refreshToken.token))
             XCTAssertNotNil(newToken)
         })
     }

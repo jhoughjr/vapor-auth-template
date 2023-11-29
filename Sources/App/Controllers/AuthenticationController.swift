@@ -37,12 +37,11 @@ struct AuthenticationController: RouteCollection {
         let pw = try await req.password
                               .async
                               .hash(registerRequest.password)
-          let user =  try User(from: registerRequest, hash: pw)
-        
-        try await req.users.create(user)
-        
+        let user =  try User(from: registerRequest, hash: pw)
         try await req.emailVerifier.verify(for: user)
-        return .noContent
+
+        try await req.users.create(user)
+        return .created
     }
     
     private func login(_ req: Request) async throws -> LoginResponse {
@@ -110,7 +109,7 @@ struct AuthenticationController: RouteCollection {
         let payload = try Payload(with: user)
         let accessToken = try req.jwt.sign(payload)
         
-        try await  req.refreshTokens.create(newToken)
+        try await req.refreshTokens.create(newToken)
              
         return AccessTokenResponse(refreshToken: newToken.token,
                                    accessToken: accessToken)
