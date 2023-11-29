@@ -10,7 +10,7 @@ services:
     ports:
       - 5432:5432
   redis:
-    image: 'bitnami/redis:5.0'
+    image: 'redis:7-alpine'
     environment:
       # ALLOW_EMPTY_PASSWORD is recommended only for development.
       - ALLOW_EMPTY_PASSWORD=yes
