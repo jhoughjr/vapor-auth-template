@@ -50,8 +50,7 @@ struct AuthenticationController: RouteCollection {
         try LoginRequest.validate(content: req)
         let loginRequest = try req.content.decode(LoginRequest.self)
         
-        guard let user = try await req.users
-                      .find(email: loginRequest.email)
+        guard let user = try await req.users.find(email: loginRequest.email)
         else {
             throw AuthenticationError.invalidEmailOrPassword
         }

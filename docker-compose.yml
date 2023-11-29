@@ -2,7 +2,7 @@ version: '2'
 
 services:
   db:
-    image: postgres:11
+    image: postgres:14
     environment:
       POSTGRES_USER: vapor
       POSTGRES_DB: vapor
