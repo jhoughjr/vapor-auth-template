@@ -59,7 +59,7 @@ final class PasswordTokenRepositoryTests: XCTestCase {
         let token = PasswordToken(userID: try user.requireID(), token: "token123")
         try await token.create(on: app.db)
         try await repository.delete(token)
-        let count = try PasswordToken.query(on: app.db).count().wait()
+        let count = try await PasswordToken.query(on: app.db).count()
         XCTAssertEqual(count, 0)
     }
     

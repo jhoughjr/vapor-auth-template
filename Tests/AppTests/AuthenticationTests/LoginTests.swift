@@ -25,7 +25,7 @@ final class LoginTests: XCTestCase {
         try await app.repositories.users.create(user)
         let loginRequest = LoginRequest(email: "test@test.com", password: "password")
         
-        try await app.test(.POST, loginPath, beforeRequest: { req in
+        try app.test(.POST, loginPath, beforeRequest: { req in
             try req.content.encode(loginRequest)
         }, afterResponse: { res in
             XCTAssertEqual(res.status, .ok)

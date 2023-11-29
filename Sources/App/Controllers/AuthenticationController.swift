@@ -176,8 +176,8 @@ struct AuthenticationController: RouteCollection {
         
         guard token.expiresAt > Date()
         else {
-            throw AuthenticationError.passwordTokenHasExpired
             try await req.passwordTokens.delete(token)
+            throw AuthenticationError.passwordTokenHasExpired
         }
         return .noContent
     }

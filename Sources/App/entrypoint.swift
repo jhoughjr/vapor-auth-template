@@ -29,12 +29,7 @@ enum Entrypoint {
         let app = Application(env)
         defer { app.shutdown() }
         
-        do {
-            try await configure(app)
-        } catch {
-            app.logger.report(error: error)
-            throw error
-        }
+        try configure(app)
         try await app.runFromAsyncMainEntrypoint()
     }
 }

@@ -29,7 +29,7 @@ final class ResetPasswordTests: XCTestCase {
             let passwordToken = try await app.repositories.passwordTokens.find(token: SHA256.hash("passwordtoken"))
             XCTAssertNotNil(passwordToken)
             
-            guard let resetPasswordJob = try await app.queues.test.first(EmailJob.self) else {
+            guard let resetPasswordJob =  app.queues.test.first(EmailJob.self) else {
                 XCTFail("Need the job to check.")
                 return 
             }
