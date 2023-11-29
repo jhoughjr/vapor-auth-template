@@ -34,7 +34,10 @@ class TestWorld {
         
         app.queues.use(.test)
         app.mailgun.use(.fake)
-        app.config = .init(frontendURL: "http://frontend.local", apiURL: "http://api.local", noReplyEmail: "no-reply@testing.local")
+        app.config = .init(frontendURL: "http://frontend.local",
+                           apiURL: "http://api.local",
+                           noReplyEmail: "no-reply@testing.local")
+        
     }
 }
 
