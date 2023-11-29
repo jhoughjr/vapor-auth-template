@@ -57,7 +57,7 @@ final class RefreshTokenRepositoryTests: XCTestCase {
         let tokenCount = try await RefreshToken.query(on: app.db).count()
         XCTAssertEqual(tokenCount, 1, "Need to create a token to test delete.")
         try await repository.delete(token)
-        let newTokenCount = try RefreshToken.query(on: app.db).count().wait()
+        let newTokenCount = try await  RefreshToken.query(on: app.db).count()
         XCTAssertEqual(newTokenCount, 0, "Created token should have been deleted.")
     }
     

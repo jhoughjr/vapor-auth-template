@@ -14,8 +14,8 @@ let package = Package(
                  from: "2.0.0"),
         .package(url: "https://github.com/vapor/jwt.git", from: "4.0.0-rc.2"),
         .package(url: "https://github.com/vapor/queues.git", from: "1.0.0"),
-        .package(url: "https://github.com/vapor/queues-redis-driver.git",
-                 from: "1.0.0-rc.1"),
+        .package(url: "https://github.com/vapor/queues-redis-driver.git", from: "1.0.0"),
+
         
         // Mailgun
         .package(url: "https://github.com/vapor-community/mailgun.git",
