@@ -6,6 +6,10 @@ This package is a Vapor 4 template to showcase different features and include au
 
 The template can be cloned and configured/changed to fit your needs, but should give a good starting point to anyone new to Vapor.
 
+## Changes
+    * tools version 5.9
+    * Repository protocols updated to a/a api.
+    
 ## Features
 * User registration
 * User login
@@ -17,19 +21,6 @@ The template can be cloned and configured/changed to fit your needs, but should 
 * Queues for email sending
 * Repository Pattern
 * Mailgun
-
-## Routes
-| URL                             | HTTP Method | Description                                              | Content (Body)          |
-|---------------------------------|:-----------:|----------------------------------------------------------|-------------------------|
-| /api/auth/register              |     POST    | Registers a user and sends email verification            | `RegisterRequest`       |
-| /api/auth/login                 |     POST    | Login with existing user (requires email verification)   | `LoginRequest`          |
-| /api/auth/email-verification                |     GET     | Used to verify an email with a email verification token  | Query parameter `token` |
-| /api/auth/email-verification                |     POST     | (Re)sends email verification to a specific email  | `SendEmailVerification` |
-| /api/auth/reset-password        |     POST    | Sends reset-password email with token                    | `ResetPasswordRequest`  |
-| /api/auth/reset-password/verify |     GET     | Verifies a given reset-password token                    | Query parameter `token` |
-| /api/auth/recover               |     POST    | Changes user password with reset-password token supplied | `RecoverAccountRequest` |
-| /api/auth/me                    |     GET     | Returns the current authenticated user                   | None                    |
-| /api/auth/accessToken           |     POST    | Gives the user a new accesstoken and refresh token       | `AccessTokenRequest`    |
 
 ## Configuration
 ### Environment variables
@@ -66,3 +57,17 @@ The template uses [VaporMailgunService](https://github.com/vapor-community/Vapor
 
 ### JWT
 This package uses JWT for Access Tokens, and by default it loads JWT credentials from a JWKS file called `keypair.jwks` in the root directory. You can generate a JWKS keypair at https://mkjwk.org/
+
+
+## Routes
+| URL                             | HTTP Method | Description                                              | Content (Body)          |
+|---------------------------------|:-----------:|----------------------------------------------------------|-------------------------|
+| /api/auth/register              |     POST    | Registers a user and sends email verification            | `RegisterRequest`       |
+| /api/auth/login                 |     POST    | Login with existing user (requires email verification)   | `LoginRequest`          |
+| /api/auth/email-verification                |     GET     | Used to verify an email with a email verification token  | Query parameter `token` |
+| /api/auth/email-verification                |     POST     | (Re)sends email verification to a specific email  | `SendEmailVerification` |
+| /api/auth/reset-password        |     POST    | Sends reset-password email with token                    | `ResetPasswordRequest`  |
+| /api/auth/reset-password/verify |     GET     | Verifies a given reset-password token                    | Query parameter `token` |
+| /api/auth/recover               |     POST    | Changes user password with reset-password token supplied | `RecoverAccountRequest` |
+| /api/auth/me                    |     GET     | Returns the current authenticated user                   | None                    |
+| /api/auth/accessToken           |     POST    | Gives the user a new accesstoken and refresh token       | `AccessTokenRequest`    |
