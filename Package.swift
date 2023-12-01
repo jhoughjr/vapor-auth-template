@@ -34,7 +34,6 @@ let package = Package(
                         package: "queues-redis-driver"),
                .product(name: "Mailgun", package: "mailgun"),
 //                .product(name: "Leaf", package: "leaf"),
-                .product(name: "Vapor", package: "vapor"),
             ]
         ),
         .testTarget(name: "AppTests", dependencies: [
