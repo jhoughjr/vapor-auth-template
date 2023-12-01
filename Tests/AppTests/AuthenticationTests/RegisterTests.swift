@@ -23,7 +23,8 @@ final class RegisterTests: XCTestCase {
         
         let data = RegisterRequest(fullName: "Test User", email: "test@test.com", password: "password123", confirmPassword: "password123")
         
-        try await app.test(.POST, registerPath, beforeRequest: { req in
+        try await app.test(.POST, registerPath,
+                           beforeRequest: { req in
             try req.content.encode(data)
         }, afterResponse: { res in
             
@@ -82,6 +83,7 @@ final class RegisterTests: XCTestCase {
         try await app.test(.POST, registerPath, beforeRequest: { req in
             try req.content.encode(registerRequest)
         }, afterResponse: { res in
+            
             XCTAssertResponseError(res, AuthenticationError.emailAlreadyExists)
             let users = try await User.query(on: app.db).all()
             XCTAssertEqual(users.count, 1)

@@ -20,7 +20,7 @@ extension AuthenticationError: AbortError {
         case .passwordsDontMatch:
             return .badRequest
         case .emailAlreadyExists:
-            return .badRequest
+            return .unprocessableEntity
         case .emailTokenHasExpired:
             return .badRequest
         case .invalidEmailOrPassword:

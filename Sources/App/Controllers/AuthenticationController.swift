@@ -34,13 +34,21 @@ struct AuthenticationController: RouteCollection {
         guard registerRequest.password == registerRequest.confirmPassword else {
             throw AuthenticationError.passwordsDontMatch
         }
+        
+        let existing = try await req.users.find(email: registerRequest.email)
+        guard existing == nil else {
+            throw AuthenticationError.emailAlreadyExists
+        }
+        
         let pw = try await req.password
                               .async
                               .hash(registerRequest.password)
+        
         let user =  try User(from: registerRequest, hash: pw)
+        
+        try await req.users.create(user)
         try await req.emailVerifier.verify(for: user)
 
-        try await req.users.create(user)
         return .created
     }
     
@@ -111,7 +119,7 @@ struct AuthenticationController: RouteCollection {
         
         try await req.refreshTokens.create(newToken)
              
-        return AccessTokenResponse(refreshToken: newToken.token,
+        return AccessTokenResponse(refreshToken: token,
                                    accessToken: accessToken)
     }
     

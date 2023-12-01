@@ -13,13 +13,14 @@ struct EmailVerifier {
         let emailToken = try EmailToken(userID: user.requireID(),
                                         token: SHA256.hash(token))
         let verifyUrl = url(token: token)
+        
         try? await emailTokenRepository.create(emailToken)
             
-            try await self.queue.dispatch(
-                EmailJob.self,
-                .init(VerificationEmail(verifyUrl: verifyUrl),
-                      to: user.email)
-            )
+        try await self.queue.dispatch(
+            EmailJob.self,
+            .init(VerificationEmail(verifyUrl: verifyUrl),
+                  to: user.email)
+        )
     }
     
     private func url(token: String) -> String {
