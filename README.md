@@ -12,15 +12,16 @@ The template can be cloned and configured/changed to fit your needs, but should 
     
 ## Features
 * User registration
+    [ ] Imperial
 * User login
 * Reset password
 * Email verification
 * Refresh and access tokens
-* Testing
 * JWT Authentication
 * Queues for email sending
 * Repository Pattern
 * Mailgun
+* Testing
 
 ## Configuration
 ### Environment variables
