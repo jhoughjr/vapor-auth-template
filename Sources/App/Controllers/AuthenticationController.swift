@@ -2,6 +2,7 @@ import Vapor
 import Fluent
 
 struct AuthenticationController: RouteCollection {
+    
     func boot(routes: RoutesBuilder) throws {
         routes.group("auth") { auth in
             auth.post("register", use: register)

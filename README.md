@@ -1,8 +1,8 @@
-# Vapor Authentication Template
+# Vapor Modern Authentication Template
 [![Swift 5.9](https://img.shields.io/badge/swift-5.9-orange.svg?style=flat)](http://swift.org)
 [![Vapor 4](https://img.shields.io/badge/vapor-4.0-blue.svg?style=flat)](https://vapor.codes)
 
-This package is a Vapor 4 template to showcase different features and include authentication functions needed for a lot of apps. It uses concepts such as: repository pattern, queues, jwt, fluent, testing and mailgun
+This package is a Vapor 4 template to showcase different features and include authentication functions needed for a lot of apps. It uses concepts such as: repository pattern, queues, jwt, fluent, testing and mailgun.
 
 The template can be cloned and configured/changed to fit your needs, but should give a good starting point to anyone new to Vapor.
 

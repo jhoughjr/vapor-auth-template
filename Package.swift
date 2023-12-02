@@ -16,7 +16,6 @@ let package = Package(
         .package(url: "https://github.com/vapor/queues.git", from: "1.0.0"),
         .package(url: "https://github.com/vapor/queues-redis-driver.git", from: "1.0.0"),
 
-        
         // Mailgun
         .package(url: "https://github.com/vapor-community/mailgun.git",
                  from: "5.0.0")
@@ -33,7 +32,7 @@ let package = Package(
                .product(name: "QueuesRedisDriver",
                         package: "queues-redis-driver"),
                .product(name: "Mailgun", package: "mailgun"),
-//                .product(name: "Leaf", package: "leaf"),
+
             ]
         ),
         .testTarget(name: "AppTests", dependencies: [

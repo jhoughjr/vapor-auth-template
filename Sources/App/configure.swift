@@ -16,24 +16,20 @@ public func configure(_ app: Application) throws {
                  fatalError("Failed to load JWKS Keypair file at: \(jwksFilePath)")
          }
          try app.jwt.signers.use(jwksJSON: jwksString)
+    }else {
+        app.logger.notice("Testing env not using JWT signing.")
     }
     
     // MARK: Database
-    // Configure PostgreSQL database
-    app.databases.use(
-        .postgres(
-            hostname: Environment.get("POSTGRES_HOSTNAME") ?? "localhost",
-            username: Environment.get("POSTGRES_USERNAME") ?? "vapor",
-            password: Environment.get("POSTGRES_PASSWORD") ?? "password",
-            database: Environment.get("POSTGRES_DATABASE") ?? "vapor"
-        ), as: .psql)
-        
+    try configurePostgresDatabase(for: app)
+   
     // MARK: Middleware
     app.middleware = .init()
     app.middleware.use(ErrorMiddleware.custom(environment: app.environment))
-    
+    app.middleware.use(app.sessions.middleware)
+
     // MARK: Model Middleware
-    
+
     // MARK: Mailgun
     app.mailgun.configuration = .environment
     app.mailgun.defaultDomain = .sandbox
@@ -49,5 +45,33 @@ public func configure(_ app: Application) throws {
     if app.environment == .development {
         try app.autoMigrate().wait()
         try app.queues.startInProcessJobs()
+    }else {
+        // could check for a queues process maybe
+        let msg =
+          """
+          Queues in production should be ran in another processs.
+            try 'swift run App queues'
+          """
+        app.logger.info(.init(stringLiteral: msg))
     }
+    
+}
+
+private func configurePostgresDatabase(for app: Application) throws {
+    
+    let hostname = Environment.get("POSTGRES_HOSTNAME") ?? "localhost"
+    let username = Environment.get("POSTGRES_USERNAME") ?? "vapor"
+    let password = Environment.get("POSTGRES_PASSWORD") ?? "password"
+    let database = Environment.get("POSTGRES_DATABASE") ?? "vapor"
+    
+    var conf = SQLPostgresConfiguration(hostname: hostname,
+                                        username: username,
+                                        tls: .disable)
+    conf.coreConfiguration.database = database
+    conf.coreConfiguration.password = password
+    
+    app.databases.use(.postgres(configuration: conf,
+                                decodingContext: .default),
+                      as: .psql)
+    app.logger.info("DB \(database) on \(hostname) as \(username).")
 }
