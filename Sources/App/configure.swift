@@ -6,6 +6,7 @@ import Mailgun
 import QueuesRedisDriver
 
 public func configure(_ app: Application) throws {
+    
     // MARK: JWT
     if app.environment != .testing {
         let jwksFilePath = app.directory.workingDirectory + (Environment.get("JWKS_KEYPAIR_FILE") ?? "keypair.jwks")
@@ -37,6 +38,7 @@ public func configure(_ app: Application) throws {
     // MARK: App Config
     app.config = .environment
     
+    /// MARK Final Setup
     try routes(app)
     try migrations(app)
     try queues(app)

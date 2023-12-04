@@ -6,12 +6,17 @@ struct AppConfig {
     let noReplyEmail: String
     
     static var environment: AppConfig {
+        
         guard
-            let frontendURL = Environment.get("SITE_FRONTEND_URL"),
-            let apiURL = Environment.get("SITE_API_URL"),
-            let noReplyEmail = Environment.get("NO_REPLY_EMAIL")
+            let frontendURL = Environment.get("SITE_FRONTEND_URL") else {
+            fatalError("Please add 'SITE_FRONTEND_URL' to environment variables")
+        }
+        guard let apiURL = Environment.get("SITE_API_URL") else {
+            fatalError("Please add 'SITE_API_URL' to environment variables")
+        }
+        guard let noReplyEmail = Environment.get("NO_REPLY_EMAIL")
             else {
-                fatalError("Please add app configuration to environment variables")
+                fatalError("Please add 'NO_REPLY_EMAIL' to environment variables")
         }
         
         return .init(frontendURL: frontendURL, apiURL: apiURL, noReplyEmail: noReplyEmail)
