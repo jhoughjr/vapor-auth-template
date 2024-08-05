@@ -1,0 +1,99 @@
+name: Vapor Template
+variables:
+  - name: fluent
+    description: Would you like to use Fluent (ORM)?
+    type: nested
+    variables:
+      - name: db
+        description: Which database would you like to use?
+        type: option
+        options:
+          - name: Postgres (Recommended)
+            description: ""
+            data:
+              module: Postgres
+              url: postgres
+              id: psql
+              version: "2.8.0"
+              is_postgres: true
+              emoji: "\U0001F418"
+          - name: MySQL
+            description: ""
+            data:
+              module: MySQL
+              url: mysql
+              id: mysql
+              version: "4.4.0"
+              is_mysql: true
+              emoji: "\U0001F42C"
+          - name: SQLite
+            description: ""
+            data:
+              module: SQLite
+              url: sqlite
+              id: sqlite
+              version: "4.6.0"
+              is_sqlite: true
+              emoji: "\U0001FAB6"
+          - name: Mongo
+            description: ""
+            data:
+              module: Mongo
+              url: mongo
+              id: mongo
+              version: "1.3.1"
+              is_mongo: true
+              emoji: "\U0001F331"
+  - name: leaf
+    description: Would you like to use Leaf (templating)?
+    type: bool
+files:
+  - file: Package.swift
+    dynamic: true
+  - folder: Sources
+    files:
+      - folder: App
+        files:
+          - file: entrypoint.swift
+          - file: configure.swift
+            dynamic: true
+          - file: routes.swift
+            dynamic: true
+          - folder: Models
+            if: fluent
+            files:
+              - Todo.swift
+          - folder: DTOs
+            if: fluent
+            files:
+              - TodoDTO.swift
+          - folder: Migrations
+            if: fluent
+            files:
+              - CreateTodo.swift
+          - folder: Controllers
+            files:
+              - .gitkeep
+              - file: TodoController.swift
+                if: fluent
+  - folder: Tests
+    files:
+      - folder: AppTests
+        files:
+          - file: AppTests.swift
+            dynamic: true
+  - folder: Resources
+    if: leaf
+    files:
+      - folder: Views
+        files:
+          - file: index.leaf
+  - folder: Public
+    files:
+      - .gitkeep
+  - file: Dockerfile
+    dynamic: true
+  - file: docker-compose.yml
+    dynamic: true
+  - .gitignore
+  - .dockerignore

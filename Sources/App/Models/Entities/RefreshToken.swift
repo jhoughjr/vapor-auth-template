@@ -1,7 +1,7 @@
 import Vapor
 import Fluent
 
-final class RefreshToken: Model {
+final class RefreshToken: Model, @unchecked Sendable  {
     static let schema = "user_refresh_tokens"
     
     @ID(key: .id)

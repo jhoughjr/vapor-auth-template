@@ -34,7 +34,7 @@ public func configure(_ app: Application) throws {
     // MARK: Mailgun
     app.mailgun.configuration = .environment
     app.mailgun.defaultDomain = .sandbox
-    
+    app.logger.info("Mailgun default domain: \(app.mailgun.defaultDomain)")
     // MARK: App Config
     app.config = .environment
     
@@ -45,8 +45,10 @@ public func configure(_ app: Application) throws {
     try services(app)
     
     if app.environment == .development {
+        app.logger.info("automigrating db...")
         try app.autoMigrate().wait()
-        try app.queues.startInProcessJobs()
+        app.logger.info("config:  \(app.queues.configuration)")
+//        try app.queues.startInProcessJobs()
     }else {
         // could check for a queues process maybe
         let msg =

@@ -23,7 +23,7 @@ struct EmailJob: Job {
             template: payload.email.templateName,
             templateData: payload.email.templateData
         )
-        
+        context.logger.info("\(mailgunMessage)")
         return context.mailgun().send(mailgunMessage).transform(to: ())
     }
 }

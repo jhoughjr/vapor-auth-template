@@ -1,7 +1,7 @@
 import Vapor
 import Fluent
 
-final class PasswordToken: Model {
+final class PasswordToken: Model, @unchecked Sendable  {
     static var schema: String = "user_password_tokens"
     
     @ID(key: .id)

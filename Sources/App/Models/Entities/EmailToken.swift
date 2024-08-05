@@ -1,7 +1,6 @@
 import Vapor
 import Fluent
-
-final class EmailToken: Model {
+final class EmailToken: Model ,@unchecked Sendable {
     static let schema = "user_email_tokens"
     
     @ID(key: .id)
