@@ -67,7 +67,7 @@ variables:
 files:
   - file: Package.swift
     dynamic: true
-  - file: env
+  - file: env-rename-me
     dynamic: true
   - folder: Sources
     files:
