@@ -9,3 +9,5 @@ db.sqlite
 .env
 *.jwks
 Package.resolved
+.env
+.env.*
