@@ -64,7 +64,7 @@ variables:
 files:
   - file: Package.swift
     dynamic: true
-  - file: .env.development
+  - file: env
     dynamic: true
   - folder: Sources
     files:
