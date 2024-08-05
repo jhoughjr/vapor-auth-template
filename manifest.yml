@@ -47,7 +47,7 @@ variables:
   - name: leaf
     description: Would you like to use Leaf (templating)?
     type: bool
-  - name: mailgun
+  - name: mailgun_key
     description: Enter your Mailgun API Key
     type: string
   - name: api_url
@@ -56,9 +56,12 @@ variables:
   - name: frontend_url
     description: Enter the fqdn for the UI of the server.
     type: string
-  - name: noreplyemail
+  - name: noreply_email
     description: Enter the noreply email address.
     type: string
+  - name: reminder
+    description: WIll you remember to rename the generated env file to dot env?
+      type: bool
     
       
 files:
