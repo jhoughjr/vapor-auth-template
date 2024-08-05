@@ -61,7 +61,7 @@ variables:
     type: string
   - name: reminder
     description: WIll you remember to rename the generated env file to dot env?
-      type: bool
+    type: bool
     
       
 files:
