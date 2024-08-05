@@ -1,4 +1,4 @@
-name: Vapor Template
+name: Vapor Auth Template
 variables:
   - name: fluent
     description: Would you like to use Fluent (ORM)?
@@ -47,6 +47,20 @@ variables:
   - name: leaf
     description: Would you like to use Leaf (templating)?
     type: bool
+  - name: mailgun
+    description: Enter your Mailgun API Key
+    type: string
+  - name: api_url
+    description: Enter the fqdn for the api of the server.
+    type: string
+  - name: frontend_url
+    description: Enter the fqdn for the UI of the server.
+    type: string
+  - name: noreplyemail
+    description: Enter the noreply email address.
+    type: string
+    
+      
 files:
   - file: Package.swift
     dynamic: true
