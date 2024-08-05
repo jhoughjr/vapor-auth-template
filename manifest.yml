@@ -112,7 +112,7 @@ files:
   - folder: Public
     files:
       - .gitkeep
-  - file: Dockerfile
+  - file: web.Dockerfile
     dynamic: true
   - file: docker-compose.yml
     dynamic: true
