@@ -84,7 +84,7 @@ files:
           - file: routes.swift
             dynamic: true
           - folder: Authenticators
-          - files:
+            files:
             - file: UserAuthenticator.swift
           - folder: Controllers
             files:
