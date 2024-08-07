@@ -6,7 +6,7 @@ YELLOW='\033[0;33m'
 NC='\033[0m' # No Color
 
 echo Hello World
-vapor new $1 --template https://github.com/jhoughjr/vapor-auth-template
+vapor new $1 --template https://github.com/jhoughjr/vapor-auth-template.git
 echo "${GREEN}Generating new jwks from mkjwk.org ...${NC}"
 curl -s 'https://mkjwk.org/jwk/rsa?alg=RS256&use=sig&gen=sha256&size=2048' \
   -o $1/keypair.jwks
