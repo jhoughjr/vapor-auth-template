@@ -47,7 +47,8 @@ variables:
   - name: leaf
     description: Would you like to use Leaf (templating)?
     type: bool
-  - name: DotEnv 
+  - name: DotEnv
+    description: Configure template env files.
     type: nested
     variables:
       - name: mailgun_key
