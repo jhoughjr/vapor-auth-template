@@ -108,7 +108,7 @@ files:
               - file: SHA156+String.swift
           - folder: Jobs
             files:
-              - EmailJob.swift
+              - file: EmailJob.swift
           - folder: Middleware
             files:
               - ErrorMiddleware.swift
