@@ -72,7 +72,7 @@ files:
     dynamic: true
   - file: env-rename-me
     dynamic: true
-    dynamicName: ".env.development"
+    dynamic_name: .env.development
   - folder: Sources
     files:
       - folder: App
