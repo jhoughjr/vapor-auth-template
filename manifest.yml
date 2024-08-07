@@ -148,19 +148,19 @@ files:
               - file: PasswordResetter.swift
               - file: Repositories.swift
               - file: RequestService.swift
-#  - folder: Tests
-#    files:
-#      - folder: AppTests
-#        folder: AuthenticationTests
-#        folder: Helpers
-#        folder: Mocks
-#        folder: RepositoryTests
-#        folder: ServiceTests
-#        files:
-#          - file: GeneralTests.swift
-#            dynamic: true
-#          - file: TestWorld.swift
-#            dynamic: true
+  - folder: Tests
+    files:
+      - folder: AppTests
+        folder: AuthenticationTests
+        folder: Helpers
+        folder: Mocks
+        folder: RepositoryTests
+        folder: ServiceTests
+        files:
+          - file: GeneralTests.swift
+            dynamic: true
+          - file: TestWorld.swift
+            dynamic: true
   - folder: Resources
     if: leaf
     files:
