@@ -107,7 +107,7 @@ files:
             files:
               - file: Data+Base64URL.swift
               - file: Mailgun+Domains.swift
-              - file: QueContext+Services.swift
+              - file: QueueContext+Services.swift
               - file: Request+Services.swift
               - file: SHA256+Base64.swift
               - file: SHA156+String.swift
