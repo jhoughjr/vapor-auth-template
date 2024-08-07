@@ -110,7 +110,7 @@ files:
               - file: QueueContext+Services.swift
               - file: Request+Services.swift
               - file: SHA256+Base64.swift
-              - file: SHA156+String.swift
+              - file: SHA256+String.swift
           - folder: Jobs
             files:
               - file: EmailJob.swift
