@@ -48,7 +48,7 @@ variables:
     description: Would you like to use Leaf (templating)?
     type: bool
   - name: DotEnv
-    description: Configure template env files.
+    description: Would you like to configure env files?
     type: nested
     variables:
       - name: mailgun_key
@@ -67,12 +67,12 @@ variables:
         description: WIll you remember to rename the generated env file to dot env?
         type: bool
     
-      
 files:
   - file: Package.swift
     dynamic: true
   - file: env-rename-me
     dynamic: true
+    dynamicName: .env.development
   - folder: Sources
     files:
       - folder: App
