@@ -156,11 +156,11 @@ files:
 #        folder: Mocks
 #        folder: RepositoryTests
 #        folder: ServiceTests
-        files:
-          - file: GeneralTests.swift
-            dynamic: true
-          - file: TestWorld.swift
-            dynamic: true
+#        files:
+#          - file: GeneralTests.swift
+#            dynamic: true
+#          - file: TestWorld.swift
+#            dynamic: true
   - folder: Resources
     if: leaf
     files:
