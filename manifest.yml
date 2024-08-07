@@ -63,9 +63,6 @@ variables:
       - name: noreply_email
         description: Enter the noreply email address.
         type: string
-#      - name: reminder
-#        description: WIll you remember to rename the generated env file to dot env?
-#        type: bool
     
 files:
   - file: Package.swift
