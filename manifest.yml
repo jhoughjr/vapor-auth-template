@@ -63,9 +63,9 @@ variables:
       - name: noreply_email
         description: Enter the noreply email address.
         type: string
-      - name: reminder
-        description: WIll you remember to rename the generated env file to dot env?
-        type: bool
+#      - name: reminder
+#        description: WIll you remember to rename the generated env file to dot env?
+#        type: bool
     
 files:
   - file: Package.swift
@@ -86,23 +86,66 @@ files:
             dynamic: true
           - file: routes.swift
             dynamic: true
-          - folder: Models
-            if: fluent
+          - folder: Authenticators
+          - files:
+            - file: UserAuthenticator.swift
+          - folder: Controllers
             files:
-              - Todo.swift
-          - folder: DTOs
-            if: fluent
+              - file: AuthenticationController.swift
+          - folder: Emails
             files:
-              - TodoDTO.swift
+              - file: Email.swift
+              - file: ResetPasswordEmail.swift
+              - file: VerificationEmail.swift
+          - folder: Errors
+            files:
+              - file: AppError.swift
+              - file: AuthenticationError.swift
+          - folder: Extensions
+            files:
+              - file: Data+BaseURL.swift
+              - file: Mailgun+Domains.swift
+              - file: QueContext+Services.swift
+              - file: Request+Services.swift
+              - file: SHA256+Base64.swift
+              - file: SHA156+String.swift
+          - folder: Jobs
+            files:
+              - EmailJob.swift
+          - folder: Middleware
+            files:
+              - ErrorMiddleware.swift
           - folder: Migrations
             if: fluent
             files:
-              - CreateTodo.swift
-          - folder: Controllers
+              - CreateEmailToken.swift
+              - CreateRefreshToken.swift
+              - CreatePasswordToken.swift
+              - CreateUser.swift
+          - folder: Models
+            if: fluent
             files:
-              - .gitkeep
-              - file: TodoController.swift
-                if: fluent
+              - folder: DTO
+              - folder: Entities
+              - folder: JWT
+          - folder: Repositories
+            files:
+              - file: EmailTokenRepository.swift
+              - file: PasswordTokenRepository.swift
+              - file: RefreshTokenRepository.swift
+              - file: UserRepository.swift
+          - folder: Services
+            files:
+              - folder: RandomGenerator
+                files:
+                  - file: Application+RandomGenerator.swift
+                  - file: Application+RandomGenerators.swift
+                  - file: RealRandomGenerator.swift
+                  - file: Request+RandomGenerator.swift
+              - file: EmailVerifier.swift
+              - file: PasswordResetter.swift
+              - file: Repositories.swift
+              - file: RequestService.swift
   - folder: Tests
     files:
       - folder: AppTests
