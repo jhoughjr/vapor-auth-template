@@ -78,7 +78,11 @@ files:
       - folder: App
         files:
           - file: entrypoint.swift
+          - file: AppConfig.swift
           - file: configure.swift
+          - file: Constants.swift
+          - file: queues.swift
+          - file: services.swift
             dynamic: true
           - file: routes.swift
             dynamic: true
