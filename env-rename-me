@@ -1,4 +1,4 @@
-MAILGUN_API_KEY={{mailgun_key}}
-SITE_FRONTEND_URL={{frontend_url}}
-SITE_API_URL={{api-url}}
-NO_REPLY_EMAIL={{noreply_email}}
+MAILGUN_API_KEY={{DotEnv.mailgun_key}}
+SITE_FRONTEND_URL={{DotEnv.frontend_url}}
+SITE_API_URL={{DotEnv.api-url}}
+NO_REPLY_EMAIL={{DotEnv.noreply_email}}
