@@ -143,9 +143,9 @@ files:
               - file: PasswordResetter.swift
               - file: Repositories.swift
               - file: RequestService.swift
-  - folder: Tests
-    files:
-      - folder: AppTests
+#  - folder: Tests
+#    files:
+#      - folder: AppTests
 #        folder: AuthenticationTests
 #        folder: Helpers
 #        folder: Mocks
