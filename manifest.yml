@@ -120,10 +120,10 @@ files:
           - folder: Migrations
             if: fluent
             files:
-              - CreateEmailToken.swift
-              - CreateRefreshToken.swift
-              - CreatePasswordToken.swift
-              - CreateUser.swift
+              - file: CreateEmailToken.swift
+              - file: CreateRefreshToken.swift
+              - file: CreatePasswordToken.swift
+              - file: CreateUser.swift
           - folder: Models
             if: fluent
             files:
@@ -184,11 +184,10 @@ files:
         folder: Mocks
         folder: RepositoryTests
         folder: ServiceTests
-        files:
-          - file: GeneralTests.swift
-            dynamic: true
-          - file: TestWorld.swift
-            dynamic: true
+        - file: GeneralTests.swift
+          dynamic: true
+        - file: TestWorld.swift
+          dynamic: true
   - folder: Resources
     if: leaf
     files:
