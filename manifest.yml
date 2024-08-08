@@ -132,7 +132,7 @@ files:
                  - folder: Authentication
                    files:
                      - folder: AccessToken
-                     files:
+                       files:
                        - file: AccessTokenRequest.swift
                        - file: AccessTokenResponse.swift
                      - folder: EmailVerification
