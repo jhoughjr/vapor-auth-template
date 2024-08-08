@@ -128,8 +128,36 @@ files:
             if: fluent
             files:
               - folder: DTO
+                files:
+                 - folder: Authentication
+                   files:
+                     - folder: AccessToken
+                     files:
+                       - file: AccessTokenRequest.swift
+                       - file: AccessTokenResponse.swift
+                     - folder: EmailVerification
+                       files:
+                         - file: SendEmailVerificationRequest.swift
+                     - folder: Login
+                       files:
+                         - file: LoginRequest.swift
+                         - file: LoginResponse.swift
+                     - folder: Register
+                       files:
+                         - file: RegisterRequest.swift
+                     - folder: ResetPassword
+                       files:
+                         - file: RecoverAccountRequest.swift
+                         - file: ResetPasswordRequest.swift
               - folder: Entities
+                files:
+                  - file: EmailToken.swift
+                  - file: PasswordToken.swift
+                  - file: RefreshToken.swift
+                  - file: User.swift
               - folder: JWT
+                files:
+                  - file: Payload.swift
           - folder: Repositories
             files:
               - file: EmailTokenRepository.swift
