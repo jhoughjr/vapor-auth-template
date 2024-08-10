@@ -6,6 +6,9 @@ import Mailgun
 import QueuesRedisDriver
 
 public func configure(_ app: Application) throws {
+    app.logger.info("configuring app...")
+    
+    app.logger.info("Setting up JWT")
     
     // MARK: JWT
     if app.environment != .testing {
@@ -20,21 +23,25 @@ public func configure(_ app: Application) throws {
     }else {
         app.logger.notice("Testing env not using JWT signing.")
     }
-    
+    app.logger.info("Setting up DB....")
     // MARK: Database
     try configurePostgresDatabase(for: app)
    
+    app.logger.info("Setting up middleware...")
     // MARK: Middleware
     app.middleware = .init()
     app.middleware.use(ErrorMiddleware.custom(environment: app.environment))
     app.middleware.use(app.sessions.middleware)
 
     // MARK: Model Middleware
-
+    
+    app.logger.info("Setting up Mailgun...")
     // MARK: Mailgun
     app.mailgun.configuration = .environment
     app.mailgun.defaultDomain = .sandbox
     app.logger.info("Mailgun default domain: \(app.mailgun.defaultDomain)")
+
+    app.logger.info("Configuring app from env...")
     // MARK: App Config
     app.config = .environment
     

@@ -2,6 +2,7 @@ import Vapor
 import Queues
 
 func queues(_ app: Application) throws {
+    app.logger.info("Configuring queues...")
     // MARK: Queues Configuration
     if app.environment != .testing {
         try app.queues.use(
