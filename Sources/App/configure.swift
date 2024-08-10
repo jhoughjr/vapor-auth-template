@@ -13,12 +13,14 @@ public func configure(_ app: Application) throws {
     // MARK: JWT
     if app.environment != .testing {
         let jwksFilePath = app.directory.workingDirectory + (Environment.get("JWKS_KEYPAIR_FILE") ?? "keypair.jwks")
+        app.logger.info("Looking for JWKS @ \(jwksFilePath)")
          guard
              let jwks = FileManager.default.contents(atPath: jwksFilePath),
              let jwksString = String(data: jwks, encoding: .utf8)
              else {
                  fatalError("Failed to load JWKS Keypair file at: \(jwksFilePath)")
          }
+        app.logger.info("JWKString = \(jwksString)")
          try app.jwt.signers.use(jwksJSON: jwksString)
     }else {
         app.logger.notice("Testing env not using JWT signing.")
