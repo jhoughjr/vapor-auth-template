@@ -151,6 +151,8 @@ files:
                        files:
                          - file: RecoverAccountRequest.swift
                          - file: ResetPasswordRequest.swift
+                 - folder: Users
+                   files: UserDTO.swift
               - folder: Entities
                 files:
                   - file: EmailToken.swift
