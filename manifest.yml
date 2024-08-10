@@ -51,6 +51,18 @@ variables:
     description: Would you like to configure env files?
     type: nested
     variables:
+      - name: POSTGRES_HOSTNAME
+        description: Enter postgres hostname.
+        type: string
+      - name: POSTGRES_DATABASE
+        description: Enter databse name.
+        type: string
+      - name: POSTGRES_USERNAME
+        description: Enter Postgres user.
+        type: string
+      - name: POSTGRES_PASSWORD
+        description: Enter postgres password.
+        type: string
       - name: mailgun_key
         description: Enter your Mailgun API Key
         type: string
