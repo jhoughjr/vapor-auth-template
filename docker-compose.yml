@@ -4,11 +4,11 @@ services:
   db:
     image: postgres:14
     environment:
-      POSTGRES_USER: vapor
-      POSTGRES_DB: vapor
-      POSTGRES_PASSWORD: password
+      POSTGRES_USER: {{DotEnv.POSTGRES_USER}}
+      POSTGRES_DB: {{DotEnv.POSTGRES_DATABASE}}
+      POSTGRES_PASSWORD: {{DotEnv.POSTGRES_PASSWORD}}
     ports:
-      - 5432:5432
+        - {{DotEnv.POSTGRES_PORT}}:{{DotEnv.POSTGRES_PORT}}
   redis:
     image: 'redis:7-alpine'
     environment:
@@ -16,4 +16,4 @@ services:
       - ALLOW_EMPTY_PASSWORD=yes
       - REDIS_DISABLE_COMMANDS=FLUSHDB,FLUSHALL
     ports:
-      - '6379:6379'
+      - {{DotEnv.REDIS_PORT}}:{{DotEnv.REDIS_PORT}}
