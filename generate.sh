@@ -14,9 +14,5 @@ echo "${GREEN}Generating new jwks from mkjwk.org ...${NC}"
  | jq ."jwks" >> ./keypair.jwks
 
 echo "${YELLOW}Done.${NC}"
-echo "${GREEN}Starting development server...  ${NC}"
-docker compose up db redis
-swift build -Xswiftc -suppress-warnings
-swift run App serve --env development
  
   
