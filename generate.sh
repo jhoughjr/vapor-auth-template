@@ -15,7 +15,8 @@ echo "${GREEN}Generating new jwks from mkjwk.org ...${NC}"
 
 echo "${YELLOW}Done.${NC}"
 echo "${GREEN}Starting development server...  ${NC}"
-swift build -Xswiftc -suppress-warnings 
+docker compose up db redis
+swift build -Xswiftc -suppress-warnings
 swift run App serve --env development
  
   
