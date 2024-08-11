@@ -20,7 +20,6 @@ public func configure(_ app: Application) throws {
              else {
                  fatalError("Failed to load JWKS Keypair file at: \(jwksFilePath)")
          }
-        app.logger.info("JWKString = \(jwksString)")
          try app.jwt.signers.use(jwksJSON: jwksString)
     }else {
         app.logger.notice("Testing env not using JWT signing.")

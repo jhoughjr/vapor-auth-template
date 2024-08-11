@@ -15,7 +15,7 @@ echo "${GREEN}Generating new jwks from mkjwk.org ...${NC}"
 
 echo "${YELLOW}Done.${NC}"
 echo "${GREEN}Starting development server...  ${NC}"
-swift build -Xswiftc -suppress-warnings -supress-remarks
+swift build -Xswiftc -suppress-warnings 
 swift run App serve --env development
  
   
