@@ -200,16 +200,16 @@ files:
   - folder: Tests
     files:
       - folder: AppTests
-      files:
-        - folder: AuthenticationTests
-        - folder: Helpers
-        - folder: Mocks
-        - folder: RepositoryTests
-        - folder: ServiceTests
-        - file: GeneralTests.swift
-          dynamic: true
-        - file: TestWorld.swift
-          dynamic: true
+        files:
+          - folder: AuthenticationTests
+          - folder: Helpers
+          - folder: Mocks
+          - folder: RepositoryTests
+          - folder: ServiceTests
+          - file: GeneralTests.swift
+            dynamic: true
+          - file: TestWorld.swift
+            dynamic: true
   - folder: Resources
     if: leaf
     files:
