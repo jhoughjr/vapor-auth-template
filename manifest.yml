@@ -64,8 +64,8 @@ variables:
       - name: POSTGRES_PASSWORD
         description: Enter postgres password.
         type: string
-      - name: REDIS_PORT
-        description: Enter Redis port.
+      - name: REDIS_URL
+        description: Enter Redis URL.
         type: string
       - name: mailgun_key
         description: Enter your Mailgun API Key
