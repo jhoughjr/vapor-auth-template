@@ -40,7 +40,7 @@ public func configure(_ app: Application) throws {
     // MARK: Mailgun
     app.mailgun.configuration = .environment
     app.mailgun.defaultDomain = .sandbox
-    app.logger.info("Mailgun default domain: \(app.mailgun.defaultDomain)")
+    app.logger.info("Mailgun default domain: \(app.mailgun.defaultDomain ?? MailgunDomain.sandbox)")
 
     app.logger.info("Configuring app from env...")
     // MARK: App Config
