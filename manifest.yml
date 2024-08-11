@@ -213,9 +213,10 @@ files:
   - folder: Resources
     if: leaf
     files:
-  - folder: Views
-    files:
-      - file: index.leaf
+      - folder: Views
+        if: leaf
+        files:
+        - file: index.leaf
   - folder: Public
     files:
       - .gitkeep
