@@ -1,9 +1,9 @@
 ##!/bin/bash
 # This is a comment!
-RED='\033[0;31m'
-GREEN='\033[0;32m'
-YELLOW='\033[0;33m'
-NC='\033[0m' # No Color
+RED='\0x1b[0;31m'
+GREEN='\0x1b[0;32m'
+YELLOW='\0x1b[0;33m'
+NC='\0x1b[0m' # No Color
 
 
   
@@ -37,7 +37,6 @@ elif [ "$(expr substr $(uname -s) 1 10)" == "MINGW64_NT" ]; then
     # Do something under 64 bits Windows NT platform
     echo win 64
 fi
-
 
 echo Generating project from template....
 vapor new $1 --template https://github.com/jhoughjr/vapor-auth-template.git

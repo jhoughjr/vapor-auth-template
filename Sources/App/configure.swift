@@ -51,7 +51,7 @@ public func configure(_ app: Application) throws {
     try migrations(app)
     try queues(app)
     try services(app)
-    
+      
     if app.environment == .development {
         app.logger.info("automigrating db...")
         try app.autoMigrate().wait()
